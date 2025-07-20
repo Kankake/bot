@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Запись на пробное занятие | LEVITA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <style>
+    :root {
+      --bg-light: #FDF5F9;
+      --card-bg: #FFFFFF;
+      --text-dark: #272727;
+      --text-muted: #555555;
+      --accent-gold: #D4AF37;
+      --btn-hover: #b5942c;
+      --card-radius: 12px;
+      --gap: 12px;
+    }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+    html, body { height: 100%; -webkit-text-size-adjust: 100%;}
+    body {
+      background: var(--bg-light);
+      font-family: 'Roboto', sans-serif;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .contact-us p {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text-dark);
+    }
+    /* Новые стили для закрепления блока снизу */
+     .contact-us {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 400px;
+      background: var(--card-bg);
+      z-index: 100;
+      padding: 2px 8px;     /* уже по высоте текста */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+     }
+    .contact-us a {
+          background: var(--text-muted) !important;
+          color: #fff !important;
+          padding: 4px 8px;
+          border-radius: 6px;
+          text-decoration: none;
+          font-weight: 500;
+          font-size: 0.9rem;
+        }
+    .logo {
+      display: block;
+      max-width: 400px;
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      z-index: 1;
+    }
+
+    .container {
+   width: 100%;
+  max-width: 400px;
+  padding: 0 16px;
+  margin: 0 auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  -webkit-transform: translate(-50%, -50%);
+}
+
+    .card { background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 20px; text-align: center; width: 100%;
+  min-height: fit-content;
+  padding: 20px;
+  margin-bottom: 16px;
+  -webkit-appearance: none;}
+    h1 { font-size: 1.5rem; margin-bottom: 16px; color: var(--accent-gold); }
+    p { font-size: 0.95rem; margin-bottom: 16px; line-height: 1.4; }
+    .step { display: none; }
+    .step.active { display: block; }
+    
+    .option.selected { background: var(--accent-gold); color: #fff; }
+
+    .option {
+      position: relative;
+      display: block;
+      padding: 12px;
+      border: 2px solid var(--accent-gold);
+      border-radius: 8px;
+      cursor: pointer;
+      background: var(--card-bg);
+      color: var(--text-dark);
+      font-weight: 500;
+      margin-bottom: 12px;
+      min-height: 44px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+@supports (padding: max(0px)) {
+  .contact-us {
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+}
+    .info-btn {
+      position: absolute;
+      top: 50%;
+      right: 8px;
+      transform: translateY(-50%);
+      border: none;
+      padding: 2px;
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+    }
+
+
+
+.info-btn svg {
+  width: 16px;
+  height: 16px;
+  color: var(--text-dark);
+}
+
+.info-btn:hover svg {
+  color: var(--text-muted);
+}
+
+    .option span {
+      flex: 1;
+      padding-right: 8px;
+    }
+
+    .description {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: left;
+      line-height: 1.4;
+      background: #f9f9f9;
+      padding: 0;
+      border-radius: 6px;
+      width: 100%;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s ease-in-out;
+      opacity: 0;
+      margin: 0;
+    }
+
+    .description.active {
+      padding: 10px;
+      max-height: 500px;
+      opacity: 1;
+      margin: 8px 0 4px;
+    }
+
+    .description.active + .collapse-btn {
+      display: inline-block;
+    }
+
+    .description.active ~ .info-btn {
+      display: none;
+    }
+
+    .collapse-btn {
+      background: var(--text-muted);
+      border: none;
+      border-radius: 4px;
+      padding: 1px 6px;       /* минимальный вертикальный и чуть побольше горизонтальный отступ */
+      font-size: 0.7rem;      /* чуть меньше шрифт */
+      color: var(--card-bg);
+      cursor: pointer;
+      display: inline-block;
+      white-space: nowrap;
+      line-height: 1;         /* убираем лишний «воздух» по высоте */
+      margin: 4px 0 0 auto;
+    }
+
+
+    .collapse-btn:hover { background: var(--btn-hover); }
+
+    input, button { font-family: 'Roboto', sans-serif; }
+    input[type="text"], input[type="tel"] { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
+    .buttons { display: flex; gap: 12px; justify-content: center; }
+    button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; font-weight: 500; -webkit-appearance: none;
+  min-height: 44px;
+  touch-action: manipulation;}
+    .collapse-btn {
+      min-height: 0 !important;
+      padding: 4px 8px !important;
+      font-size: 0.75rem !important;
+      line-height: 1.5 !important;
+    }
+    .primary { background: var(--accent-gold); color: #fff; }
+    .primary:hover { background: var(--btn-hover); }
+    .secondary { background: var(--text-muted); color: #fff; }
+    .secondary:hover { background: var(--text-muted); }
+    ul { list-style: none; padding: 0; margin: 0 0 16px; text-align: left; }
+    ul li { margin-bottom: 8px; }
+    ul b { color: var(--accent-gold); }
+    .zv {color: #000; font-family: 'Calibri'; align-self: center; margin: 8px 8px 8px 8px;}
+    #options-goal {
+  max-height: 60vh; /* 60% of viewport height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding-right: 8px; /* Add some padding for the scrollbar */
+}
+
+/* Optional: Style the scrollbar for webkit browsers */
+#options-goal::-webkit-scrollbar {
+  width: 8px;
+}
+
+#options-goal::-webkit-scrollbar-track {
+  background: var(--bg-light);
+  border-radius: 4px;
+}
+
+#options-goal::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 4px;
+}
+
+#options-goal::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-gold);
+}
+  </style>
+</head>
+<body>
+  <img src="assets/levita.png" class="logo">
+  <div class="container">
+    <div id="step-1" class="card step active">
+      <h1>Добро пожаловать!</h1>
+      <p>Мы сеть студий <strong>LEVITA г. Новороссийск</strong>. И мы рады, что вы выбрали нас! Нажмите далее для записи и получите первое занятие <strong>бесплатно</strong>.</p>
+      <div class="buttons"><button class="primary" id="startBtn">Далее</button></div>
+    </div>
+    <div id="step-2" class="card step">
+      <h1>Ваша цель</h1>
+      <p>Выберите вашу цель – и мы подскажем, куда записаться</p>
+      <div class="options" id="options-goal">
+        <div class="option" data-val="Улучшить гибкость">🧘 Улучшить гибкость и сесть на шпагат</div>
+        <div class="option" data-val="Укрепить тело">💪 Укрепить тело и мышцы-стабилизаторы</div>
+        <div class="option" data-val="Убрать лишний вес">🔥 Убрать лишний вес и подтянуть фигуру</div>
+        <div class="option" data-val="Снять стресс">🪷 Снять стресс и расслабиться после работы</div>
+        <div class="option" data-val="Исправить осанку">🩰 Исправить осанку и походку</div>
+        <div class="option" data-val="Почувствовать женственность">👠 Почувствовать женственность и лёгкость</div>
+        <div class="option" data-val="Научиться танцевать">🎼 Научиться танцевать, реализовать мечту детства</div>
+        <div class="option" data-val="Начать заниматься">🎯 Начать заниматься собой регулярно</div>
+        <div class="option" data-val="Подготовиться к выступлению">💃 Подготовиться к выступлению или фотосессии</div>
+        <div class="option" data-val="Улучшить координацию">🤸 Улучшить координацию и владение телом</div>
+        <div class="option" id="chooseSelf" data-val="Самостоятельный выбор">💛 Хочу выбрать направление сама</div>
+      </div>
+      <div class="buttons">
+        <button class="secondary" id="back2">Назад</button>
+        <button class="primary" id="next2">Далее</button>
+      </div>
+    </div>
+    <div id="step-3" class="card step">
+      <h1>Выберите направление для первого посещения</h1>
+      <div class="options" id="options-dir"></div>
+      <div class="buttons">
+        <button class="secondary" id="back3">Назад</button>
+        <button class="primary" id="next3">Далее</button>
+      </div>
+    </div>
+    <div id="step-4" class="card step">
+      <h1>Выберите удобную студию</h1>
+      <div class="options" id="options-address">
+        <div class="option" data-val="Свободы 6">Свободы 6 (Центральный)</div>
+        <div class="option" data-val="Видова 210Д">Видова 210Д (Приморский)</div>
+        <div class="option" data-val="Дзержинского 211/2">Дзержинского 211/2 (Южный)</div>
+      </div>
+      <div class="buttons">
+        <button class="secondary" id="back4">Назад</button>
+        <button class="primary" id="next4">Далее</button>
+      </div>
+    </div>
+    <div id="step-5" class="card step">
+      <h1>Доступные даты для записи</h1>
+      <div class="options" id="options-slots"></div>
+      <div class="buttons">
+        <button class="secondary" id="back5">Назад</button>
+        <button class="primary" id="next5">Далее</button>
+      </div>
+      <div class="buttons" style="margin-top: 8px;">
+        <button class="more" id="weekBtn">Больше</button>
+      </div>
+    </div>
+        <div id="step-6" class="card step">
+      <h1>Важно:</h1>
+      <div style="margin-bottom: 16px;">
+      <span class="zv" >Хотим Вас уведомить, что по политике нашей компании Вы можете посетить бесплатное пробное занятие только один раз.
+ Если Вы пропустите Вашу запись, бесплатное занятие посетить больше не получится.
+              Ведь наша компания не про массовость, каждый педагог составляет индивидуальную тренировку для клиентов.
+                Подтверждаю запись?
+                Или хотите перезаписаться?
+              </span>
+              </div>
+      <div class="buttons">
+        <button class="secondary" id="back6" >Изменить</button>
+        <button class="primary" id="submit6" >Подтвердить</button>
+      </div>
+    </div>
+    <div id="step-7" class="card step">
+      <div style="margin-bottom: 16px;">
+        <b style="align-content: center; color: #505050; font-size: 1.3ic;">Не забудьте с собой взять форму и хорошее настроение!</b>
+      </div>
+      <ul>
+        <li><b>Цель:</b> <span id="sum-goal"></span></li>
+        <li><b>Направление:</b> <span id="sum-dir"></span></li>
+        <li><b>Студия:</b> <span id="sum-address"></span></li>
+        <li><b>Слот:</b> <span id="sum-slot"></span></li>
+      </ul>
+      <div class="buttons">
+        <button class="secondary" id="back7">Назад</button>
+        <button class="primary" id="submit7">Отправить</button>
+      </div>
+    </div>
+    <div id="step-8" class="card step">
+      <h1>Готово!</h1>
+      <p>Спасибо! Подтвердите свою запись в телеграмме, отправив ваше имя и номер телефона.<br>До скорых встреч!</p>
+      <div class="buttons"><button class="primary" id="thankBtn">Закрыть</button></div>
+    </div>
+  </div>
+<div class="card contact-us">
+      <p>Связаться с нами:</p>
+      <div class="buttons">
+        <a href="https://t.me/levita_nvrsk" target="_blank" class="secondary">Телеграм</a>
+        <a href="https://wa.me/79284085968" target="_blank" class="secondary">WhatsApp</a>
+      </div>
+    </div>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    const steps = ['step-1','step-2','step-3','step-4','step-5','step-6','step-7','step-8'];
+    let data = {};
+    const show = id => {
+      steps.forEach(s => document.getElementById(s).classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    };
+    // Step1
+    document.getElementById('startBtn').addEventListener('click', () => show('step-2'));
+    // Step2
+    document.querySelectorAll('#options-goal .option').forEach(el => {
+      el.addEventListener('click', () => {
+        document.querySelectorAll('#options-goal .option').forEach(o => o.classList.remove('selected'));
+        el.classList.add('selected');
+        data.goal = el.dataset.val;
+      });
+    });
+    document.getElementById('back2').addEventListener('click', () => show('step-1'));
+    document.getElementById('next2').addEventListener('click', () => {
+      if (!data.goal) {
+        alert('Пожалуйста, выберите цель');
+        return;
+      }
+      // если выбрали самостоятельный выбор — показываем все направления
+      if (data.goal === 'Самостоятельный выбор') {
+        populateDirs(true);
+      } else {
+        populateDirs(false);
+      }
+      show('step-3');
+    });
+
+
+    // Step3
+    document.getElementById('back3').addEventListener('click', () => show('step-2'));
+    document.getElementById('next3').addEventListener('click', () => data.direction && show('step-4'));
+    // Step4
+    document.querySelectorAll('#options-address .option').forEach(el => {
+      el.addEventListener('click', () => {
+        document.querySelectorAll('#options-address .option').forEach(o => o.classList.remove('selected'));
+        el.classList.add('selected');
+        data.address = el.dataset.val;
+      });
+    });
+    document.getElementById('back4').addEventListener('click', () => show('step-3'));
+    document.getElementById('next4').addEventListener('click', () => {
+      if (!data.address) {
+        alert('Пожалуйста, выберите студию');
+        return;
+      }
+      fetchAndShowSlots();
+    });
+    // Step5
+    document.getElementById('back5').addEventListener('click', () => show('step-4'));
+    document.getElementById('next5').addEventListener('click', () => {
+    if (!data.slot) {
+      alert('Пожалуйста, выберите дату для записи');
+      return;
+    }
+  
+      document.getElementById('sum-goal').textContent = data.goal;
+      document.getElementById('sum-dir').textContent = data.direction;
+      document.getElementById('sum-address').textContent = data.address;
+      document.getElementById('sum-slot').textContent = data.slot;
+      show('step-6');
+    });
+    // Step6
+    document.getElementById('back6').addEventListener('click', () => show('step-5'));
+    document.getElementById('submit6').addEventListener('click', () => {
+      show('step-7');
+    });
+
+    // Step7
+    document.getElementById('back7').addEventListener('click', () => show('step-6'));
+    
+    document.getElementById('submit7').addEventListener('click', async () => {
+      const resp = await fetch('/submit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ telegram_id: tg.initDataUnsafe.user.id, ...data }) });
+      const res = await resp.json();
+      if (res.ok) show('step-8'); else alert('Ошибка отправки');
+    });
+    document.getElementById('thankBtn').addEventListener('click', () => tg.close());
+
+    const directionDescriptions = {
+      'Танцы народов мира': 'Уникальная возможность для вас погрузиться в мир разнообразных культур и традиций, добавить красок в свою тренировочную рутину. Знакомимся с теоретической информацией о народах и разучиваем танцевальную связку.',
+      'Барре': 'Динамичная силовая тренировка у станка с использованием мячиков и резиновых эспандеров. Прорабатываются мышцы ног, пресса и ягодиц. Занятие проходит под бодрую современную музыку с элементами классической хореографии. Очень необычное и любимое нашими клиентками направление!',
+      'Боди-Балет': 'Силовая тренировка, которая сочетает в себе фитнес и классическую хореографию. Улучшается координация и баланс, укрепляются мышцы всего тела, особенно мышцы кора. Благодаря активному темпу тренировки растет общая выносливость.',
+      'Балетная подкачка': 'Круговая тренировка на ковриках, направленная на прокачку ягодиц и пресса. Подходит тем, кто хочет похудеть и уже имел физическую подготовку.',
+      'Классическая хореография (начальный уровень)': 'Занятие у балетного станка под классическую музыку. Прорабатываются мышцы ног, рук и корпуса, улучшается осанка, выворотность и пластичность. Сжигается 300–800 калорий за тренировку.',
+      'Классическая хореография (средний уровень)': 'Нужны базовые знания классической хореографии, занятие у балетного станка и на середине зала под классическую музыку. Отрабатываем танцевальные комбинации. Сжигается 300–800 калорий за тренировку.',
+      'Растяжка': 'Статичная тренировка, направленная на улучшение гибкости, подвижности суставов и эластичности мышц. Минимизирует боль и снижает вероятность травм.',
+      'Пилатес': 'Статичная тренировка, развивающая физическую силу, гибкость, координацию. Снимает стресс, усиливает концентрацию. Выполняется в медленном темпе под спокойную музыку.',
+      'Постановка на пуанты': 'Занятие, на котором девушки встают на пуанты. Подготовка мышц ступни и голени на ковриках и у станка, затем изучение движений классической хореографии на пуантах.'
+    };
+
+
+  // Обновленная функция populateDirs: исправлен показ описания, подсветка опции и кнопка скрыть
+function populateDirs(showAll = false) {
+  const cont = document.getElementById('options-dir');
+  cont.innerHTML = '';
+  // Включаем возможность скролла
+  cont.style.maxHeight = '60vh';
+  cont.style.overflowY = 'auto';
+
+  const map = {
+  'Улучшить гибкость': ['Растяжка', 'Пилатес', 'Классическая хореография (начальный уровень)'],
+  'Укрепить тело': ['Боди-Балет', 'Барре', 'Балетная подкачка', 'Пилатес'],
+  'Убрать лишний вес': ['Боди-Балет', 'Балетная подкачка', 'Барре', 'Классическая хореография (начальный уровень)'],
+  'Снять стресс': ['Пилатес', 'Растяжка', 'Классическая хореография (начальный уровень)'],
+  'Исправить осанку': ['Классическая хореография (начальный уровень)', 'Классическая хореография (средний уровень)', 'Барре', 'Пилатес'],
+  'Почувствовать женственность': ['Боди-Балет', 'Классическая хореография (начальный уровень)', 'Танцы народов мира'],
+  'Научиться танцевать': ['Классическая хореография (начальный уровень)', 'Танцы народов мира', 'Постановка на пуанты'],
+  'Начать заниматься': ['Пилатес', 'Растяжка', 'Барре'],
+  'Подготовиться к выступлению': ['Классическая хореография (средний уровень)', 'Постановка на пуанты', 'Танцы народов мира'],
+  'Улучшить координацию': ['Боди-Балет', 'Классическая хореография (начальный уровень)', 'Барре']
+};
+
+
+  const list = showAll ? Object.keys(directionDescriptions) : (map[data.goal] || []);
+
+  list.forEach(val => {
+    const d = document.createElement('div');
+    d.className = 'option';
+    d.dataset.val = val;
+    if (data.direction === val) d.classList.add('selected');
+
+    // Вставляем HTML перенесенный в template для расширения
+    d.innerHTML = `
+      <span>${val}</span>
+      <button class="info-btn" title="Подробнее">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 16V12M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="description">${directionDescriptions[val] || ''}</div>
+      <button class="collapse-btn" title="Скрыть">Скрыть</button>
+    `;
+
+    const infoBtn = d.querySelector('.info-btn');
+    const desc = d.querySelector('.description');
+    const collapseBtn = d.querySelector('.collapse-btn');
+    // Скрываем описание и кнопку
+    desc.classList.remove('active');
+    collapseBtn.style.display = 'none';
+
+    // Клик по info-btn — показываем описание и кнопку скрыть
+    infoBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      desc.classList.add('active');
+      collapseBtn.style.display = 'inline-block';
+      infoBtn.style.display = 'none';
+      desc.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    // Кнопка скрыть — прячет описание и себя, возвращает info-btn
+    collapseBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      desc.classList.remove('active');
+      collapseBtn.style.display = 'none';
+      infoBtn.style.display = 'flex';
+    });
+
+    // Клик по опции — выделение
+    d.addEventListener('click', e => {
+      if (e.target.closest('.info-btn') || e.target.closest('.collapse-btn')) return;
+      document.querySelectorAll('#options-dir .option').forEach(o => o.classList.remove('selected'));
+      d.classList.add('selected');
+      data.direction = val;
+    });
+
+    cont.appendChild(d);
+  });
+}
+
+document.getElementById('weekBtn').addEventListener('click', function() {
+  if (!data.direction || !data.address) {
+    alert('Сначала выберите направление и студию');
+    return;
+  }
+  
+  fetchAndShowSlots(7);
+});
+
+
+document.getElementById('options-slots').addEventListener('click', function(e) {
+  if (e.target && e.target.id === 'weekBtn') {
+    fetchAndShowSlots(7);
+  }
+});
+
+async function fetchAndShowSlots(days = 3) {
+  if (!data.direction || !data.address) {
+    alert('Пожалуйста, выберите направление и студию');
+    return;
+  }
+
+  try {
+    const response = await fetch('/slots', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        direction: data.direction,
+        address: data.address,
+        days: days
+      })
+    });
+
+    if (!response.ok) throw new Error('Ошибка сети');
+    const result = await response.json();
+       
+    if (!result.ok) {
+      throw new Error('Ошибка получения слотов');
+    }
+
+    const slots = result.slots || [];
+    const cont = document.getElementById('options-slots');
+    cont.innerHTML = '';
+    cont.style.maxHeight = '300px';
+    cont.style.overflowY = 'auto';
+    let hasSlots = false;
+
+    // Группируем слоты по дням
+    const slotsByDate = {};
+    slots.forEach(slot => {
+      if (!slotsByDate[slot.date]) {
+        slotsByDate[slot.date] = [];
+      }
+      slotsByDate[slot.date].push(slot);
+    });
+
+    // Показываем слоты по дням
+    Object.keys(slotsByDate).sort().forEach(date => {
+      const dateStr = new Date(date).toLocaleDateString('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+        weekday: 'short'
+      });
+         
+      slotsByDate[date].forEach(slot => {
+        hasSlots = true;
+        const b = document.createElement('div');
+        b.className = 'option';
+        b.textContent = `${dateStr} — ${slot.time}`;
+        b.onclick = () => {
+          document.querySelectorAll('#options-slots .option').forEach(o =>
+            o.classList.remove('selected')
+          );
+          b.classList.add('selected');
+          data.slot = `${date}, ${slot.time}`;
+        };
+        cont.appendChild(b);
+      });
+    });
+
+    if (!hasSlots) {
+      const noSlots = document.createElement('div');
+      noSlots.style.padding = '20px';
+      noSlots.style.textAlign = 'center';
+      noSlots.style.color = 'var(--text-muted)';
+      noSlots.textContent = `Нет доступных слотов на ближайшие ${days} дней`;
+      cont.appendChild(noSlots);
+    }
+
+    show('step-5');
+  } catch (error) {
+    console.error('Ошибка загрузки расписания:', error);
+    alert('Не удалось загрузить расписание');
+  }
+}
+
+  </script>
+</body>
+</html>
+
+
